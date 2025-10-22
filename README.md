@@ -1,36 +1,108 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Blogity - Full-Stack Blogging Platform
 
-## Getting Started
+A full-stack blogging platform built with Next.js 15 (App Router), tRPC, Drizzle ORM, PostgreSQL (Neon), Tailwind CSS, and shadcn/ui, fulfilling the requirements of the technical assessment.
 
-First, run the development server:
+**Live Demo:** [Link will be added after Vercel deployment]
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework:** Next.js 15 (App Router)
+- **API:** tRPC
+- **Database:** PostgreSQL (Hosted on Neon)
+- **ORM:** Drizzle ORM
+- **Styling:** Tailwind CSS (v4 with CSS-first configuration)
+- **UI Components:** shadcn/ui
+- **Schema Validation:** Zod
+- **State Management:** React Query (via tRPC)
+- **Theme:** next-themes (Dark Mode)
+- **Markdown:** react-markdown + remark-gfm
+- **Deployment:** Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## ✅ Features Implemented
 
-To learn more about Next.js, take a look at the following resources:
+### Priority 1: Must Haves
+- [x] Blog post CRUD (Create, Read, Update, Delete)
+- [x] Category CRUD
+- [x] Assign multiple categories to posts
+- [x] Blog listing page (`/blog`)
+- [x] Individual post view page (`/posts/[slug]`)
+- [x] Category filtering on listing page
+- [x] Basic responsive navigation
+- [x] Clean, professional UI
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Priority 2: Should Haves
+- [x] Landing page (`/`) with 3 sections (Header/Hero, Features, Footer)
+- [x] Dashboard page (`/dashboard`) for post management
+- [x] Draft vs. Published post status
+- [x] Loading and error states handled
+- [x] Mobile-responsive design
+- [x] Content editor (Markdown support implemented)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Priority 3: Nice to Haves
+- [x] Dark mode support
+- [x] Search functionality for posts (by title)
+- [x] Post statistics (word count, reading time)
+- [ ] ~~Full 5-section landing page~~ (Implemented 4 sections)
+- [ ] ~~Advanced rich text editor features~~ (Chose Markdown)
+- [ ] ~~Image upload for posts~~ (Skipped due to complexity/time)
+- [ ] ~~Post preview functionality~~ (Skipped due to time)
+- [ ] ~~SEO meta tags~~
+- [ ] ~~Pagination~~
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🔧 Running Locally
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1.  **Clone the repository:**
+    ```bash
+    git clone <your-repo-url>
+    cd blogging-platform # Or your repo name
+    ```
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+3.  **Set up environment variables:**
+    Create a `.env` file in the project root and add your Neon database connection string:
+    ```
+    DATABASE_URL="your-postgres-connection-string"
+    ```
+4.  **Sync the database schema:**
+    ```bash
+    npx drizzle-kit push
+    ```
+5.  **Run the development server:**
+    ```bash
+    npm run dev
+    ```
+    Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## 🏗️ Architectural Decisions & Trade-offs
+
+- **State Management:** Used tRPC's React Query integration for server state management (fetching, caching, mutations). Did not implement Zustand as there wasn't a clear need for global client-side state, avoiding potential over-engineering.
+- **Content Editor:** Chose Markdown (`react-markdown`) over a rich text editor as suggested in the prompt to save time. Successfully implemented markdown rendering and styling.
+- **Database:** Used Neon for a quick and easy hosted PostgreSQL setup.
+- **Styling:** Leveraged shadcn/ui heavily for rapid UI development. Utilized Tailwind v4's CSS-first configuration alongside `tailwind.config.ts` for plugin management (`@tailwindcss/typography`, `tailwindcss-animate`).
+- **Optimistic Updates:** Implemented for post deletion on the dashboard for a better UX.
+- **Middleware:** Added simple tRPC logging middleware to demonstrate understanding.
+
+---
+
+## 📝 tRPC Router Structure
+
+The tRPC routers are organized by domain within the `/server/routers` directory:
+- `_app.ts`: The main app router that merges all other routers.
+- `post.ts`: Handles all CRUD operations, filtering, and searching for blog posts.
+- `category.ts`: Handles all CRUD operations for categories.
+
+Procedures use Zod for input validation, and a logging middleware is applied globally via `server/trpc.ts`.
+
+---
+
+**(Optional) Time Spent:** Approximately [Your Estimated Hours, e.g., 15-16] hours.
