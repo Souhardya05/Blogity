@@ -1,5 +1,4 @@
-// app/_components/TRPCProvider.tsx
-"use client"; // This must be a client component
+"use client"; 
 
 import { useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -13,9 +12,9 @@ function getBaseUrl() {
     return '';
   if (process.env.VERCEL_URL)
     // reference for vercel.com
-    return `https://${process.env.VERCEL_URL}`; // <-- CORRECTED
+    return `https://${process.env.VERCEL_URL}`; 
   // assume localhost
-  return `http://localhost:${process.env.PORT ?? 3000}`; // <-- CORRECTED
+  return `http://localhost:${process.env.PORT ?? 3000}`; 
 }
 
 export function TRPCProvider({ children }: { children: React.ReactNode }) {
@@ -27,7 +26,7 @@ export function TRPCProvider({ children }: { children: React.ReactNode }) {
     api.createClient({
       links: [
         httpBatchLink({
-          url: `${getBaseUrl()}/api/trpc`, // <-- CORRECTED
+          url: `${getBaseUrl()}/api/trpc`, 
         }),
       ],
     })

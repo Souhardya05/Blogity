@@ -1,9 +1,7 @@
-// drizzle/schema.ts
-
 import { relations } from 'drizzle-orm';
 import { pgTable, serial, text, varchar, timestamp, boolean, primaryKey } from 'drizzle-orm/pg-core';
 
-// ## Posts Table
+// Posts Table
 // This table will store our blog posts.
 export const posts = pgTable('posts', {
   id: serial('id').primaryKey(),
@@ -15,7 +13,7 @@ export const posts = pgTable('posts', {
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
-// ## Categories Table
+// Categories Table
 // This table will store the different categories for posts.
 export const categories = pgTable('categories', {
   id: serial('id').primaryKey(),
@@ -24,8 +22,8 @@ export const categories = pgTable('categories', {
   description: text('description'),
 });
 
-// ## Posts to Categories Table (Junction Table)
-// This table creates the many-to-many relationship between posts and categories.
+//Posts to Categories Table (Junction Table)
+// This table links posts to their categories (many-to-many relationship).
 export const postsToCategories = pgTable('posts_to_categories', {
     postId: serial('post_id').notNull().references(() => posts.id),
     categoryId: serial('category_id').notNull().references(() => categories.id),
@@ -34,8 +32,8 @@ export const postsToCategories = pgTable('posts_to_categories', {
   })
 );
 
-// ## Drizzle Relations
-// This is how you tell Drizzle about the relationships. It makes querying data much easier.
+// Drizzle Relations
+// Define relations between tables for easier querying.
 export const postsRelations = relations(posts, ({ many }) => ({
   postsToCategories: many(postsToCategories),
 }));

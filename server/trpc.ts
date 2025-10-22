@@ -1,5 +1,3 @@
-// server/trpc.ts
-
 import { initTRPC } from '@trpc/server';
 import { performance } from 'perf_hooks';
 

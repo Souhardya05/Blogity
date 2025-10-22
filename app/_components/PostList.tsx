@@ -1,14 +1,11 @@
-// app/_components/PostList.tsx
 'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/utils/api'; // For runtime calls
 
-// --- THIS IS THE CORRECT TYPE IMPORT ---
 import { type inferProcedureOutput } from '@trpc/server';
-import { type AppRouter } from '@/server/routers/_app'; // Import your main router TYPE
-// --- END TYPE IMPORT ---
+import { type AppRouter } from '@/server/routers/_app'; 
 
 import { toast } from 'sonner';
 
@@ -33,15 +30,12 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
-// --- THIS IS THE CORRECT TYPE DEFINITION ---
-// Use the tRPC helper type to correctly infer the output type.
-// Note: server types use Date for createdAt/updatedAt, but at runtime (over the wire)
-// these fields may be serialized to strings (depending on transformer). Accept both.
+
 type Post = Omit<
   inferProcedureOutput<AppRouter['post']['getAll']>[number],
   'createdAt' | 'updatedAt'
 > & { createdAt: string | Date; updatedAt: string | Date };
-// --- END TYPE DEFINITION ---
+
 
 export function PostList() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);

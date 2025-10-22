@@ -1,5 +1,3 @@
-// server/routers/category.ts
-
 import { z } from 'zod';
 import { router, publicProcedure } from '../trpc';
 import { db } from '@/drizzle/db';
@@ -18,7 +16,7 @@ const createSlug = (name: string) => {
 
 export const categoryRouter = router({
   
-  // ## 1. CREATE CATEGORY
+  //1. CREATE CATEGORY
   create: publicProcedure
     .input(
       z.object({
@@ -55,27 +53,20 @@ export const categoryRouter = router({
       }
     }),
 
-  // ## 2. GET ALL CATEGORIES
+  // 2. GET ALL CATEGORIES
   getAll: publicProcedure.query(async () => {
     return await db.query.categories.findMany({
       orderBy: [desc(categories.name)],
     });
   }),
 
-  // ## 3. GET CATEGORY BY SLUG
+  //  3. GET CATEGORY BY SLUG
   getBySlug: publicProcedure
     .input(z.object({ slug: z.string() }))
     .query(async ({ input }) => {
       const category = await db.query.categories.findFirst({
         where: eq(categories.slug, input.slug),
-        // Optionally, you could include all posts related to this category
-        // with: {
-        //   postsToCategories: {
-        //     with: {
-        //       post: true,
-        //     }
-        //   }
-        // }
+        
       });
 
       if (!category) {
@@ -87,7 +78,7 @@ export const categoryRouter = router({
       return category;
     }),
 
-  // ## 4. UPDATE CATEGORY
+  // 4. UPDATE CATEGORY
   update: publicProcedure
     .input(
       z.object({
@@ -115,18 +106,18 @@ export const categoryRouter = router({
       return updatedCategory;
     }),
 
-  // ## 5. DELETE CATEGORY
+  // 5. DELETE CATEGORY
   delete: publicProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ input }) => {
       // Before deleting a category, we must remove its links to posts.
       await db.transaction(async (tx) => {
-        // Delete all references in the junction table
+        
         await tx
           .delete(postsToCategories)
           .where(eq(postsToCategories.categoryId, input.id));
         
-        // Then, delete the category itself
+        
         await tx.delete(categories).where(eq(categories.id, input.id));
       });
       

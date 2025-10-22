@@ -15,11 +15,11 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input'; // 1. Import Input
+import { Input } from '@/components/ui/input'; 
 
 export default function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
-  const [searchTerm, setSearchTerm] = useState(''); // 2. Add search state
+  const [searchTerm, setSearchTerm] = useState('');
 
   const { data: categories, isLoading: isLoadingCategories } =
     api.category.getAll.useQuery();
@@ -30,7 +30,7 @@ export default function HomePage() {
     error: postsError,
   } = api.post.getAll.useQuery({
     categoryId: selectedCategory ?? undefined,
-    searchTerm: searchTerm || undefined, // 3. Pass search term to API
+    searchTerm: searchTerm || undefined,
   });
 
   const isLoading = isLoadingPosts || isLoadingCategories;
@@ -49,13 +49,13 @@ export default function HomePage() {
     <main className="container mx-auto p-4 md:p-8">
       {/* Header and Navigation */}
       <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-        <h1 className="text-3xl font-bold">My Blog</h1>
+        <h1 className="text-3xl font-bold">Blogs</h1>
         <Button asChild>
           <Link href="/dashboard">Go to Dashboard</Link>
         </Button>
       </header>
 
-      {/* --- 4. ADD SEARCH AND FILTER SECTION --- */}
+      
       <div className="flex flex-col md:flex-row gap-4 mb-8">
         <Input
           placeholder="Search posts by title..."
@@ -81,7 +81,7 @@ export default function HomePage() {
           ))}
         </div>
       </div>
-      {/* --- END SECTION --- */}
+      
 
       {/* Grid for Blog Posts */}
       {isLoading ? (

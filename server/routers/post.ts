@@ -1,10 +1,8 @@
-// server/routers/post.ts
-
 import { z } from 'zod';
 import { router, publicProcedure } from '../trpc';
 import { db } from '@/drizzle/db';
 import { posts, postsToCategories } from '@/drizzle/schema';
-// Add `ilike` (for search) and `and` (to combine filters)
+
 import { eq, desc, and, exists, ilike } from 'drizzle-orm';
 import { TRPCError } from '@trpc/server';
 
@@ -18,7 +16,7 @@ const createSlug = (title: string) => {
 };
 
 export const postRouter = router({
-  // ## 1. CREATE POST
+  //  CREATE POST
   create: publicProcedure
     .input(
       z.object({
@@ -58,18 +56,18 @@ export const postRouter = router({
       return newPost;
     }),
 
-  // ## 2. GET ALL POSTS (UPDATED FOR SEARCH)
+  //  GET ALL POSTS (UPDATED FOR SEARCH)
   getAll: publicProcedure
     .input(
       z.object({
         categoryId: z.number().optional(),
-        searchTerm: z.string().optional(), // 1. Add search term to input
+        searchTerm: z.string().optional(), //  Add search term to input
       })
     )
     .query(async ({ input }) => {
       const { categoryId, searchTerm } = input;
 
-      // 2. Build category filter
+      //  Build category filter
       const categoryFilter = categoryId
         ? exists(
             db
@@ -84,12 +82,12 @@ export const postRouter = router({
           )
         : undefined;
 
-      // 3. Build search filter (ilike is case-insensitive)
+      //  Build search filter (ilike is case-insensitive)
       const searchFilter = searchTerm
         ? ilike(posts.title, `%${searchTerm}%`)
         : undefined;
 
-      // 4. Find posts with combined filters
+      // Find posts with combined filters
       const allPosts = await db.query.posts.findMany({
         orderBy: [desc(posts.createdAt)],
         where: and(categoryFilter, searchFilter), // 5. Combine filters
@@ -129,7 +127,7 @@ export const postRouter = router({
       return post;
     }),
 
-  // ## GET POST BY ID (for editing)
+  //  GET POST BY ID (for editing)
   getById: publicProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ input }) => {
@@ -160,7 +158,7 @@ export const postRouter = router({
       };
     }),
 
-  // ## 4. UPDATE POST
+  //  UPDATE POST
   update: publicProcedure
     .input(
       z.object({
@@ -205,7 +203,7 @@ export const postRouter = router({
       });
     }),
 
-  // ## 5. DELETE POST
+  //  DELETE POST
   delete: publicProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ input }) => {

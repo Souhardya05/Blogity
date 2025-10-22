@@ -1,4 +1,3 @@
-// app/dashboard/edit/[id]/page.tsx
 'use client';
 
 import { useEffect } from 'react';
@@ -38,24 +37,24 @@ export default function EditPostPage() {
   const postId = Number(params.id);
   const utils = api.useUtils();
 
-  // 2. Fetch all available categories
+  
   const { data: categories, isLoading: isLoadingCategories } =
     api.category.getAll.useQuery();
 
-  // 3. Fetch the specific post to edit
+
   const { data: postData, isLoading: isLoadingPost } =
     api.post.getById.useQuery({ id: postId });
 
-  // 4. tRPC mutation hook to update the post
+
   const updatePostMutation = api.post.update.useMutation({
     onSuccess: () => {
       toast.success('Post updated successfully!');
       
-      utils.post.getAll.invalidate(); // 3. USE THE VARIABLE HERE
-      utils.post.getById.invalidate({ id: postId }); // (Also good to invalidate this)
-      utils.category.getAll.invalidate(); // (And this, just in case)
+      utils.post.getAll.invalidate(); 
+      utils.post.getById.invalidate({ id: postId }); 
+      utils.category.getAll.invalidate(); 
 
-      router.push('/dashboard'); // This will now be reached
+      router.push('/dashboard');
     },
     onError: (error) => {
       toast.error('Failed to update post', {
@@ -64,7 +63,6 @@ export default function EditPostPage() {
     },
   });
 
-  // 5. Set up the form
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -75,7 +73,7 @@ export default function EditPostPage() {
     },
   });
 
-  // 6. Pre-fill the form once the post data has loaded
+
   useEffect(() => {
     if (postData) {
       form.reset({
@@ -87,11 +85,11 @@ export default function EditPostPage() {
     }
   }, [postData, form]);
 
-  // 7. Handle form submission
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     updatePostMutation.mutate({
-      id: postId, // <-- Pass the post ID
-      ...values,  // <-- Pass the updated form values
+      id: postId, 
+      ...values,  
     });
   }
 

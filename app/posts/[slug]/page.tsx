@@ -1,4 +1,3 @@
-// app/posts/[slug]/page.tsx
 'use client';
 
 import { useParams } from 'next/navigation';
@@ -30,13 +29,13 @@ export default function PostPage() {
     );
   }
 
-  // --- 1. ADD STATS CALCULATION ---
+
   const content = post.content || '';
-  // Calculates word count by splitting on whitespace
+  // --- 1. CALCULATE STATS ---
   const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
   // Assumes an average reading speed of 200 words per minute
   const readingTime = Math.ceil(wordCount / 200);
-  // --- END STATS CALCULATION ---
+
 
   return (
     <main className="container mx-auto p-4 md:p-8 max-w-3xl">
@@ -57,7 +56,7 @@ export default function PostPage() {
         <span className="hidden md:inline">•</span>
         <span>{readingTime} min read</span>
       </div>
-      {/* --- END STATS --- */}
+     
 
       {/* Categories */}
       <div className="flex flex-wrap gap-2 mb-8">

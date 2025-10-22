@@ -1,4 +1,3 @@
-// app/_components/CategoryManager.tsx
 'use client';
 
 import { useState } from 'react';
@@ -32,7 +31,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 
-// Form schema for creating a new category
+// Form schema for creating a category
 const categoryFormSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
 });
@@ -43,39 +42,33 @@ export function CategoryManager() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(null);
 
-  // Call hook at the top
+  // tRPC utils and queries
   const utils = api.useUtils();
-
-  // --- tRPC Hooks ---
   const { data: categories, isLoading: isLoadingCategories } =
     api.category.getAll.useQuery();
 
+  // Mutation to create a category
   const createCategoryMutation = api.category.create.useMutation({
     onSuccess: () => {
       toast.success('Category created!');
-      // Use 'utils' variable
       utils.category.getAll.invalidate();
       utils.post.getAll.invalidate();
       form.reset();
     },
     onError: (error) => {
-      toast.error('Failed to create category', {
-        description: error.message,
-      });
+      toast.error('Failed to create category', { description: error.message });
     },
   });
 
+  // Mutation to delete a category
   const deleteCategoryMutation = api.category.delete.useMutation({
     onSuccess: () => {
       toast.success('Category deleted!');
-      // Use 'utils' variable
       utils.category.getAll.invalidate();
       utils.post.getAll.invalidate();
     },
     onError: (error) => {
-      toast.error('Failed to delete category', {
-        description: error.message,
-      });
+      toast.error('Failed to delete category', { description: error.message });
     },
     onSettled: () => {
       setShowDeleteDialog(false);
@@ -83,7 +76,7 @@ export function CategoryManager() {
     },
   });
 
-  // --- Form Setup ---
+  // Form setup
   const form = useForm<z.infer<typeof categoryFormSchema>>({
     resolver: zodResolver(categoryFormSchema),
     defaultValues: { name: '' },
@@ -93,7 +86,7 @@ export function CategoryManager() {
     createCategoryMutation.mutate(values);
   }
 
-  // --- Delete Dialog Logic ---
+  // Delete dialog logic
   const openDeleteDialog = (category: Category) => {
     setCategoryToDelete(category);
     setShowDeleteDialog(true);
@@ -107,7 +100,7 @@ export function CategoryManager() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-      {/* 1. Create Category Form */}
+      {/* Create Category Form */}
       <div>
         <h3 className="text-lg font-medium mb-4">Create New Category</h3>
         <Form {...form}>
@@ -125,17 +118,14 @@ export function CategoryManager() {
                 </FormItem>
               )}
             />
-            <Button
-              type="submit"
-              disabled={createCategoryMutation.isPending}
-            >
+            <Button type="submit" disabled={createCategoryMutation.isPending}>
               {createCategoryMutation.isPending ? 'Creating...' : 'Create'}
             </Button>
           </form>
         </Form>
       </div>
 
-      {/* 2. List Existing Categories */}
+      {/* Existing Categories */}
       <div>
         <h3 className="text-lg font-medium mb-4">Existing Categories</h3>
         {isLoadingCategories ? (
@@ -162,17 +152,15 @@ export function CategoryManager() {
         )}
       </div>
 
-      {/* 3. Delete Confirmation Dialog */}
+      {/* Delete Confirmation Dialog */}
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            {/* --- THIS IS THE FIX --- */}
             <AlertDialogDescription>
               This action cannot be undone. This will permanently delete the
               category {categoryToDelete?.name} and remove it from all posts.
             </AlertDialogDescription>
-            {/* --- END FIX --- */}
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
