@@ -2,7 +2,9 @@
 
 A full-stack blogging platform built with Next.js 15 (App Router), tRPC, Drizzle ORM, PostgreSQL (Neon), Tailwind CSS, and shadcn/ui, fulfilling the requirements of the technical assessment.
 
-**Live Demo:** [Link will be added after Vercel deployment]
+**Live Demo:** [https://blogity-jx4hiz3xh-souhardya-sahas-projects.vercel.app/](https://blogity-jx4hiz3xh-souhardya-sahas-projects.vercel.app/)
+
+**GitHub Repository:** [https://github.com/Souhardya05/Blogity.git](https://github.com/Souhardya05/Blogity.git)
 
 ---
 
@@ -12,7 +14,7 @@ A full-stack blogging platform built with Next.js 15 (App Router), tRPC, Drizzle
 - **API:** tRPC
 - **Database:** PostgreSQL (Hosted on Neon)
 - **ORM:** Drizzle ORM
-- **Styling:** Tailwind CSS (v4 with CSS-first configuration)
+- **Styling:** Tailwind CSS (v4)
 - **UI Components:** shadcn/ui
 - **Schema Validation:** Zod
 - **State Management:** React Query (via tRPC)
@@ -59,8 +61,8 @@ A full-stack blogging platform built with Next.js 15 (App Router), tRPC, Drizzle
 
 1.  **Clone the repository:**
     ```bash
-    git clone <your-repo-url>
-    cd blogging-platform # Or your repo name
+    git clone [https://github.com/Souhardya05/Blogity.git](https://github.com/Souhardya05/Blogity.git)
+    cd Blogity
     ```
 2.  **Install dependencies:**
     ```bash
@@ -86,11 +88,12 @@ A full-stack blogging platform built with Next.js 15 (App Router), tRPC, Drizzle
 ## 🏗️ Architectural Decisions & Trade-offs
 
 - **State Management:** Used tRPC's React Query integration for server state management (fetching, caching, mutations). Did not implement Zustand as there wasn't a clear need for global client-side state, avoiding potential over-engineering.
-- **Content Editor:** Chose Markdown (`react-markdown`) over a rich text editor as suggested in the prompt to save time. Successfully implemented markdown rendering and styling.
+- **Content Editor:** Chose Markdown (`react-markdown`) over a rich text editor as suggested in the prompt to save time. Successfully implemented markdown rendering and styling using `@tailwindcss/typography`.
 - **Database:** Used Neon for a quick and easy hosted PostgreSQL setup.
-- **Styling:** Leveraged shadcn/ui heavily for rapid UI development. Utilized Tailwind v4's CSS-first configuration alongside `tailwind.config.ts` for plugin management (`@tailwindcss/typography`, `tailwindcss-animate`).
+- **Styling:** Leveraged shadcn/ui heavily for rapid UI development. Utilized Tailwind v4 alongside `tailwind.config.ts` for plugin management (`@tailwindcss/typography`, `tailwindcss-animate`). Correctly configured `postcss.config.mjs` to ensure plugins load correctly.
 - **Optimistic Updates:** Implemented for post deletion on the dashboard for a better UX.
 - **Middleware:** Added simple tRPC logging middleware to demonstrate understanding.
+- **Deployment Build Issues:** Encountered and resolved several local build issues related to file permissions (EPERM), missing dependencies (`autoprefixer`, `@tailwindcss/postcss`), and configuration conflicts, ensuring the final code builds cleanly on Vercel.
 
 ---
 
@@ -105,4 +108,4 @@ Procedures use Zod for input validation, and a logging middleware is applied glo
 
 ---
 
-**(Optional) Time Spent:** Approximately [Your Estimated Hours, e.g., 15-16] hours.
+**Time Spent:** Approximately 18 hours.
